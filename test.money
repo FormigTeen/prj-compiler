@@ -1,0 +1,49 @@
+bill ten = 10
+coin extra_coin = .20
+bill repeat = ten * extra_coin
+account my_account = 10.20
+bank[account:5] my_bank
+
+# Inicialização de elementos do vetor
+my_bank[0] = 100.50
+my_bank[1] = 200.25
+
+# Atribuição e expressão aritmética
+account my_savings = my_account + my_bank[0] * .05
+
+# Condicional simples
+if my_account > 10.00 then
+    bill fee = 1
+    my_account = my_account - fee
+end
+
+# Condicional composto
+if my_account < 50.00 then
+    coin discount = .10
+    my_account = my_account + discount
+else
+    my_account = my_account - .05
+end
+
+# Laço de repetição
+while my_bank[1] > 0.00 then
+    my_bank[1] = my_bank[1] - 10.00
+end
+
+# Definição de uma função que retorna um valor flutuante
+account transaction interest(account base, coin rate) then
+    account result = base * rate
+    return result
+end
+
+# Chamada de função
+account calculated_interest = interest(my_account, .03)
+
+# Definição de uma função que não retorna valor
+void transaction log_transaction(account amount) then
+    # Exemplo fictício de "impressão" de uma transação
+    print("Transaction: ", amount)
+end
+
+# Chamando a função que não retorna valor
+start log_transaction(calculated_interest)
