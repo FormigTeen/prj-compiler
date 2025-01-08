@@ -152,6 +152,43 @@ Essas funções permitem uma visualização estruturada e intuitiva do que está
 
 ---
 
+## Tokens
+
+Nesta seção são apresentados os principais tokens utilizados na linguagem **Money**, incluindo suas respectivas expressões regulares (*regex*) e exemplos de lexemas válidos.
+
+### Tabela de Tokens
+
+| **Nome**      | **Regex**                | **Exemplo de Lexemas** |
+| ------------- | ------------------------ | ------------------------- |
+| `TYPE`        | `(coin\|bill\|account)`    | `bill`, `coin`            |
+| `ID`          | `[a-zA-Z_][a-zA-Z0-9_]*` | `my_var`, `account1`      |
+| `NUMBER`      | `\\d+(\\.\\d+)?`         | `10`, `3.14`              |
+| `ASSIGN`      | `=`                      | `=`                       |
+| `OPERATOR`    | `[+\\-*/]`               | `+`, `-`                  |
+| `COMPARISON`  | `(==\|!=\|<=\|>=\|<\|>)`     | `==`, `!=`                |
+| `IF`          | `if`                     | `if`                      |
+| `ELSE`        | `else`                   | `else`                    |
+| `WHILE`       | `while`                  | `while`                   |
+| `OPEN_PAREN`  | `\\(`                    | `(`                       |
+| `CLOSE_PAREN` | `\\)`                    | `)`                       |
+| `END`         | `end`                    | `end`                     |
+
+### Diagrama de Transições
+
+Foi desenvolvido um diagrama de transições que detalha como alguns lexemas são reconhecidos e classificados em tokens. Esse diagrama é uma representação simplificada do funcionamento do analisador léxico desenvolvido.
+
+O [código do diagrama](simple.tex) pode ser acessado e inspecionado para verificação.
+
+#### Considerações sobre o Diagrama
+
+Para manter o diagrama legível e significativo, foram omitidos os estados e transições relacionados aos tokens de identificadores (`ID`), palavras-chave como `IF`, `ELSE` e outros. A implementação desses casos utiliza uma estrutura de **trie** combinada com uma versão do algoritmo **KMP** para múltiplas palavras, que sugere a criação de transições de falhas para estados específicos onde o intuito é manter o processamento do prefixo já encontrado.
+
+Segue a abaixo a imagem do **diagrama de transições**:
+
+![Diagrama de Transições](diagram.png)
+
+---
+
 ## Como Executar
 
 O projeto utiliza **Make** para gerenciar a compilação e execução. As definições estão descritas no arquivo [Makefile](Makefile):
@@ -175,3 +212,4 @@ Você pode acessar o arquivo completo com as definições no [Makefile](Makefile
    ```
 
 ---
+

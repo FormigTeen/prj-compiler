@@ -1,0 +1,40 @@
+\documentclass[tikz,border=2mm]{standalone}
+\usetikzlibrary{automata, positioning}
+
+\begin{document}
+
+\begin{tikzpicture}[shorten >=1pt, node distance=5cm, on grid, auto]
+   % Estados
+   \node[state, initial, initial where=right] (START) {$INIT$};
+   \node[state, accepting] (ASS) [right=of START] {$ASS$};
+   \node[state, accepting] (PRE_COM) [below=of START] {$COM$};
+   \node[state, accepting] (COM) [below=of PRE_COM] {$COM$};
+   \node[state] (DIF) [left=of PRE_COM] {$$};
+   \node[state, accepting] (OPAR) [left=of START] {$OPAR$};
+   \node[state, accepting] (CPAR) [below=2cm of OPAR] {$CPAR$};
+   \node[state, accepting] (INT) [above=5cm of START] {$NUM$};
+   \node[state] (PRE_INT) [left=of INT] {$$};
+   \node[state, accepting] (FLOAT) [left=of PRE_INT] {$NUM$};
+   \node[state, accepting] (OPE) [above=of ASS] {$OPE$};
+   
+   % Transições
+   \path[->]
+    (START) edge[out=140, in=170, loop] node[above] {[ ]} ()
+    (START) edge node {$=$} (ASS)
+    (START) edge node {$<,>$} (PRE_COM)
+    (START) edge node {$!$} (DIF)
+    (START) edge node {$($} (OPAR)
+    (START) edge node {$)$} (CPAR)
+    (START) edge node {$0..9$} (INT)
+    (START) edge node {$.$} (PRE_INT)
+    (START) edge node {$+,-,/,*$} (OPE)
+    (INT) edge[loop] node {$0..9$} ()
+    (INT) edge node {$.$} (PRE_INT)
+    (PRE_INT) edge node {$0..9$} (FLOAT)
+    (FLOAT) edge[loop] node {$0..9$} ()
+    (DIF) edge node {$=$} (COM)
+    (PRE_COM) edge node {$=$} (COM)
+    (ASS) edge node {$=$} (COM);
+\end{tikzpicture}
+
+\end{document}

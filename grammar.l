@@ -115,7 +115,7 @@
 
 
     void print_tag(const char *name) {
-        printf("<%s>", name);
+        printf("<%s/>", name);
         return;
     }
 
