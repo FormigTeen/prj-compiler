@@ -1,6 +1,7 @@
 /* Definitions */
 
 %{
+    #include "grammar.tab.h"
     #include <stdio.h>
     #include <ctype.h>
     #include <stdlib.h>
@@ -173,7 +174,7 @@ return_keyword  return
 
 %%
 
-{type}            { print_tag("TYPE"); }
+{type}            { return TYPE; }
 {assignment}      { print_tag("ASS"); }
 {open_paren}      { print_tag("OPEN_PAREN"); }
 {close_paren}     { print_tag("CLOSE_PAREN"); }
@@ -195,10 +196,3 @@ return_keyword  return
 {whitespace}      ; /* Ignora espaços em branco */
 
 %%
-
-/* Functions */
-
-int main(void) {
-    yylex(); 
-    return 0;
-}
