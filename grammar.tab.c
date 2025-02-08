@@ -75,9 +75,28 @@
 void yyerror(const char *s);
 int yylex();
 int yyparse();
+int indent_level = 0;
+
+void increase_indent() {
+    indent_level++;
+}
+
+/* Função auxiliar para diminuir o nível de indentação (subindo um nível na árvore) */
+void decrease_indent() {
+    if (indent_level > 0) {
+        indent_level--;
+    }
+}
+
+void print_node(const char *node_name) {
+    for (int i = 0; i < indent_level; i++) {
+        printf("\t");
+    }
+    printf("%s\n", node_name);
+}
 
 
-#line 81 "grammar.tab.c"
+#line 100 "grammar.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -109,8 +128,26 @@ enum yysymbol_kind_t
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
   YYSYMBOL_TYPE = 3,                       /* TYPE  */
-  YYSYMBOL_YYACCEPT = 4,                   /* $accept  */
-  YYSYMBOL_equation = 5                    /* equation  */
+  YYSYMBOL_ID = 4,                         /* ID  */
+  YYSYMBOL_BALANCE_VALUE = 5,              /* BALANCE_VALUE  */
+  YYSYMBOL_NEWLINE = 6,                    /* NEWLINE  */
+  YYSYMBOL_ASS = 7,                        /* ASS  */
+  YYSYMBOL_OPERATOR = 8,                   /* OPERATOR  */
+  YYSYMBOL_BANK = 9,                       /* BANK  */
+  YYSYMBOL_OPEN_BRACKET = 10,              /* OPEN_BRACKET  */
+  YYSYMBOL_CLOSE_BRACKET = 11,             /* CLOSE_BRACKET  */
+  YYSYMBOL_YYACCEPT = 12,                  /* $accept  */
+  YYSYMBOL_program = 13,                   /* program  */
+  YYSYMBOL_statement = 14,                 /* statement  */
+  YYSYMBOL_15_1 = 15,                      /* $@1  */
+  YYSYMBOL_assignment = 16,                /* assignment  */
+  YYSYMBOL_17_2 = 17,                      /* $@2  */
+  YYSYMBOL_expr = 18,                      /* expr  */
+  YYSYMBOL_term = 19,                      /* term  */
+  YYSYMBOL_bank_assignment = 20,           /* bank_assignment  */
+  YYSYMBOL_21_3 = 21,                      /* $@3  */
+  YYSYMBOL_vector_assignment = 22,         /* vector_assignment  */
+  YYSYMBOL_23_4 = 23                       /* $@4  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -438,19 +475,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   0
+#define YYLAST   18
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  4
+#define YYNTOKENS  12
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  2
+#define YYNNTS  12
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  2
+#define YYNRULES  17
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  3
+#define YYNSTATES  29
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   258
+#define YYMAXUTOK   266
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -489,14 +526,16 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     1,     2,     3
+       2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
+       5,     6,     7,     8,     9,    10,    11
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    15,    15
+       0,    51,    51,    53,    58,    58,    60,    61,    66,    66,
+      75,    76,    80,    81,    85,    85,    91,    91
 };
 #endif
 
@@ -512,8 +551,11 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "TYPE", "$accept",
-  "equation", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "TYPE", "ID",
+  "BALANCE_VALUE", "NEWLINE", "ASS", "OPERATOR", "BANK", "OPEN_BRACKET",
+  "CLOSE_BRACKET", "$accept", "program", "statement", "$@1", "assignment",
+  "$@2", "expr", "term", "bank_assignment", "$@3", "vector_assignment",
+  "$@4", YY_NULLPTR
 };
 
 static const char *
@@ -523,12 +565,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-1)
+#define YYPACT_NINF (-13)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-1)
+#define YYTABLE_NINF (-15)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -537,7 +579,9 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -1,     0,    -1
+     -13,     0,   -13,    -2,   -13,   -13,     2,   -13,    -1,   -13,
+     -13,     3,     6,     7,    -4,     5,   -13,     8,    -3,     4,
+     -13,   -13,     9,   -13,    11,    -3,    -3,   -13,     9
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -545,19 +589,23 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1
+       2,     4,     1,     0,    16,     7,     0,     6,     0,     3,
+       5,     0,     0,     0,     0,     0,    15,     0,     0,     0,
+      13,    12,     9,    10,     0,     0,     0,    11,    17
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -1,    -1
+     -13,   -13,   -13,   -13,   -13,   -13,   -12,    -9,   -13,   -13,
+     -13,   -13
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1
+       0,     1,     3,     4,     5,     6,    22,    23,     7,     8,
+      10,    11
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -565,31 +613,37 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       2
+       2,    20,    21,    -8,     9,    12,    17,    14,    13,   -14,
+      15,    16,    18,    19,    28,    24,    27,    25,    26
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0
+       0,     4,     5,     3,     6,     3,    10,     4,     9,     9,
+       4,     4,     7,     5,    26,    11,    25,     8,     7
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     5,     0
+       0,    13,     0,    14,    15,    16,    17,    20,    21,     6,
+      22,    23,     3,     9,     4,     4,     4,    10,     7,     5,
+       4,     5,    18,    19,    11,     8,     7,    19,    18
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,     4,     5
+       0,    12,    13,    13,    15,    14,    14,    14,    17,    16,
+      18,    18,    19,    19,    21,    20,    23,    22
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0
+       0,     2,     0,     3,     0,     2,     1,     1,     0,     5,
+       1,     3,     1,     1,     0,     3,     0,     7
 };
 
 
@@ -1052,8 +1106,85 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 2: /* program: %empty  */
+#line 51 "grammar.y"
+    { print_node("program"); increase_indent(); }
+#line 1113 "grammar.tab.c"
+    break;
 
-#line 1057 "grammar.tab.c"
+  case 3: /* program: program statement NEWLINE  */
+#line 54 "grammar.y"
+    { decrease_indent(); }
+#line 1119 "grammar.tab.c"
+    break;
+
+  case 4: /* $@1: %empty  */
+#line 58 "grammar.y"
+    { print_node("statement"); increase_indent(); }
+#line 1125 "grammar.tab.c"
+    break;
+
+  case 7: /* statement: assignment  */
+#line 62 "grammar.y"
+    { decrease_indent(); }
+#line 1131 "grammar.tab.c"
+    break;
+
+  case 8: /* $@2: %empty  */
+#line 66 "grammar.y"
+    { print_node("assignment"); increase_indent(); }
+#line 1137 "grammar.tab.c"
+    break;
+
+  case 9: /* assignment: $@2 TYPE ID ASS expr  */
+#line 68 "grammar.y"
+    { 
+      print_node((yyvsp[-2].str)); 
+      decrease_indent(); 
+    }
+#line 1146 "grammar.tab.c"
+    break;
+
+  case 12: /* term: BALANCE_VALUE  */
+#line 80 "grammar.y"
+                  { print_node((yyvsp[0].str)); }
+#line 1152 "grammar.tab.c"
+    break;
+
+  case 13: /* term: ID  */
+#line 81 "grammar.y"
+       { print_node((yyvsp[0].str)); }
+#line 1158 "grammar.tab.c"
+    break;
+
+  case 14: /* $@3: %empty  */
+#line 85 "grammar.y"
+    { print_node("bank_assignment"); increase_indent(); }
+#line 1164 "grammar.tab.c"
+    break;
+
+  case 15: /* bank_assignment: $@3 BANK ID  */
+#line 87 "grammar.y"
+    { print_node((yyvsp[0].str)); decrease_indent(); }
+#line 1170 "grammar.tab.c"
+    break;
+
+  case 16: /* $@4: %empty  */
+#line 91 "grammar.y"
+    { print_node("vector_assignment"); increase_indent(); }
+#line 1176 "grammar.tab.c"
+    break;
+
+  case 17: /* vector_assignment: $@4 ID OPEN_BRACKET BALANCE_VALUE CLOSE_BRACKET ASS expr  */
+#line 93 "grammar.y"
+    { 
+      decrease_indent(); 
+    }
+#line 1184 "grammar.tab.c"
+    break;
+
+
+#line 1188 "grammar.tab.c"
 
       default: break;
     }
@@ -1246,7 +1377,8 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 18 "grammar.y"
+#line 99 "grammar.y"
+
 
 
 void yyerror(const char *s) {
@@ -1254,7 +1386,6 @@ void yyerror(const char *s) {
 }
 
 int main() {
-    printf("Digite uma expressão matemática: \n");
     yyparse();
     return 0;
 }

@@ -54,14 +54,31 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    TYPE = 258                     /* TYPE  */
+    TYPE = 258,                    /* TYPE  */
+    ID = 259,                      /* ID  */
+    BALANCE_VALUE = 260,           /* BALANCE_VALUE  */
+    NEWLINE = 261,                 /* NEWLINE  */
+    ASS = 262,                     /* ASS  */
+    OPERATOR = 263,                /* OPERATOR  */
+    BANK = 264,                    /* BANK  */
+    OPEN_BRACKET = 265,            /* OPEN_BRACKET  */
+    CLOSE_BRACKET = 266            /* CLOSE_BRACKET  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 30 "grammar.y"
+
+  char *str;
+
+#line 79 "grammar.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

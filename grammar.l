@@ -1,6 +1,7 @@
 /* Definitions */
 
 %{
+    #define CAN_PRINT 0
     #include "grammar.tab.h"
     #include <stdio.h>
     #include <ctype.h>
@@ -116,16 +117,19 @@
 
 
     void print_tag(const char *name) {
+        if ( !CAN_PRINT ) return;
         printf("<%s/>", name);
         return;
     }
 
     void print_tag_with_value(const char *name, const SValue *item) {
+        if ( !CAN_PRINT ) return;
         printf("<%s>%d.%d</%s>", name, item->value, item->decimal, name);
         return;
     }
 
     void print_tag_with_symbol(const char *name, const Symbol *item) {
+        if ( !CAN_PRINT ) return;
         printf("<%s>%p</%s>", name, (void*) item, name);
         return;
     }
@@ -137,7 +141,8 @@
 
 /* Language Atoms */
 comment          \#.*
-limit           [ \t\n]
+limit           [ \t]
+newline       \n+
 whitespace      {limit}+
 letter          [a-zA-Z]
 digit           [0-9]
@@ -160,6 +165,8 @@ assignment      =
 comma           ,
 open_paren \(
 close_paren \)
+open_bracket \[
+close_bracket \]
 if_keyword    if
 else_keyword  else
 void            void
@@ -174,10 +181,19 @@ return_keyword  return
 
 %%
 
-{type}            { return TYPE; }
-{assignment}      { print_tag("ASS"); }
+{type} { 
+    print_tag("TYPE"); 
+    yylval.str = strdup(yytext);
+    return TYPE; 
+}
+{assignment} { 
+    print_tag("ASS"); 
+    return ASS; 
+}
 {open_paren}      { print_tag("OPEN_PAREN"); }
 {close_paren}     { print_tag("CLOSE_PAREN"); }
+{open_bracket} { print_tag("OPEN_BRACKET"); return OPEN_BRACKET; }
+{close_bracket} { print_tag("CLOSE_BRACKET"); return CLOSE_BRACKET; }
 {comma}           { print_tag("COMMA"); }
 {void}            { print_tag("VOID"); }
 {if_keyword}      { print_tag("IF"); }
@@ -186,13 +202,28 @@ return_keyword  return
 {end_keyword}     { print_tag("END"); }
 {while_keyword}   { print_tag("WHILE"); }
 {return_keyword}  { print_tag("RETURN"); }
+{operator}        { return OPERATOR; }
 {transaction_keyword}  { print_tag("TRANSACTION"); }
 {start_keyword}  { print_tag("START"); }
-{bank}            { print_tag("BANK"); }
-{id}              { Symbol* my_id = upsert_id(yytext, "ID"); print_tag_with_symbol("ID", my_id); }
+{bank} { 
+    print_tag("BANK"); 
+    return BANK;
+}
+{id}  { 
+    Symbol* my_id = upsert_id(yytext, "ID"); 
+    print_tag_with_symbol("ID", my_id); 
+    yylval.str = strdup(yytext); 
+    return ID;
+}
 {bank_id}         { print_tag("BANK_ID"); }
-{balance_value}   { SValue* my_value = upsert_value(yytext); print_tag_with_value("BALANCE", my_value); }
+{balance_value}   { 
+    SValue* my_value = upsert_value(yytext); 
+    print_tag_with_value("BALANCE", my_value); 
+    yylval.str = strdup(yytext);
+    return BALANCE_VALUE;
+}
 {comment}         ; /* Ignora comentários */
 {whitespace}      ; /* Ignora espaços em branco */
+{newline}       { return NEWLINE; }
 
 %%

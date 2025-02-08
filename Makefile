@@ -11,3 +11,6 @@ clean:
 
 test: compiler
 	./lexical_analyzer < test.money
+
+test_simple: compiler
+	./lexical_analyzer < test_simple.money

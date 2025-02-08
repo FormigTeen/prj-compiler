@@ -1,0 +1,9 @@
+bill ten = 10
+coin extra_coin = .20
+bill repeat = ten * extra_coin
+account my_account = 10.20
+bank[account:5] my_bank
+
+# Inicialização de elementos do vetor
+my_bank[0] = 100.50
+my_bank[1] = 200.25
