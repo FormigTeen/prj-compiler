@@ -62,7 +62,13 @@ extern int yydebug;
     OPERATOR = 263,                /* OPERATOR  */
     BANK = 264,                    /* BANK  */
     OPEN_BRACKET = 265,            /* OPEN_BRACKET  */
-    CLOSE_BRACKET = 266            /* CLOSE_BRACKET  */
+    CLOSE_BRACKET = 266,           /* CLOSE_BRACKET  */
+    IF = 267,                      /* IF  */
+    THEN = 268,                    /* THEN  */
+    END = 269,                     /* END  */
+    COMPARISON = 270,              /* COMPARISON  */
+    ELSE = 271,                    /* ELSE  */
+    WHILE = 272                    /* WHILE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -71,11 +77,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 30 "grammar.y"
+#line 34 "grammar.y"
 
   char *str;
 
-#line 79 "grammar.tab.h"
+#line 85 "grammar.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

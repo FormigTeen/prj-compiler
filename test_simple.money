@@ -7,3 +7,25 @@ bank[account:5] my_bank
 # Inicialização de elementos do vetor
 my_bank[0] = 100.50
 my_bank[1] = 200.25
+
+# Atribuição e expressão aritmética
+account my_savings = my_account + my_bank[0] * .05
+
+# Condicional simples
+if my_account > 10.00 then
+    bill fee = 1
+    my_account = my_account - fee
+end
+
+# Condicional composto
+if my_account < 50.00 then
+    coin discount = .10
+    my_account = my_account + discount
+else
+    my_account = my_account - .05
+end
+
+# Laço de repetição
+while my_bank[1] > 0.00 then
+    my_bank[1] = my_bank[1] - 10.00
+end

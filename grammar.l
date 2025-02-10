@@ -1,7 +1,7 @@
 /* Definitions */
 
 %{
-    #define CAN_PRINT 0
+    #define CAN_PRINT 1
     #include "grammar.tab.h"
     #include <stdio.h>
     #include <ctype.h>
@@ -171,7 +171,6 @@ if_keyword    if
 else_keyword  else
 void            void
 id              {letter}({letter}|{digit}|_)*
-bank_id         {id}\[{digit}+\]
 while_keyword   while
 then_keyword    then
 end_keyword     end
@@ -192,17 +191,21 @@ return_keyword  return
 }
 {open_paren}      { print_tag("OPEN_PAREN"); }
 {close_paren}     { print_tag("CLOSE_PAREN"); }
-{open_bracket} { print_tag("OPEN_BRACKET"); return OPEN_BRACKET; }
+{open_bracket} { 
+    print_tag("OPEN_BRACKET"); 
+    return OPEN_BRACKET; 
+}
 {close_bracket} { print_tag("CLOSE_BRACKET"); return CLOSE_BRACKET; }
 {comma}           { print_tag("COMMA"); }
 {void}            { print_tag("VOID"); }
-{if_keyword}      { print_tag("IF"); }
-{else_keyword}    { print_tag("ELSE"); }
-{then_keyword}    { print_tag("THEN"); }
-{end_keyword}     { print_tag("END"); }
-{while_keyword}   { print_tag("WHILE"); }
+{if_keyword}      { print_tag("IF"); return IF; }
+{else_keyword}    { print_tag("ELSE"); return ELSE; }
+{then_keyword}    { print_tag("THEN"); return THEN; }
+{end_keyword}     { print_tag("END"); return END; }
+{while_keyword}   { print_tag("WHILE"); return WHILE; }
 {return_keyword}  { print_tag("RETURN"); }
-{operator}        { return OPERATOR; }
+{operator}        { print_tag("OPERATOR"); return OPERATOR; }
+{comparison}     { print_tag("COMPARISON"); return COMPARISON; }
 {transaction_keyword}  { print_tag("TRANSACTION"); }
 {start_keyword}  { print_tag("START"); }
 {bank} { 
@@ -215,7 +218,6 @@ return_keyword  return
     yylval.str = strdup(yytext); 
     return ID;
 }
-{bank_id}         { print_tag("BANK_ID"); }
 {balance_value}   { 
     SValue* my_value = upsert_value(yytext); 
     print_tag_with_value("BALANCE", my_value); 
@@ -224,6 +226,6 @@ return_keyword  return
 }
 {comment}         ; /* Ignora comentários */
 {whitespace}      ; /* Ignora espaços em branco */
-{newline}       { return NEWLINE; }
+{newline}       { print_tag("NEWLINE"); return NEWLINE; }
 
 %%
