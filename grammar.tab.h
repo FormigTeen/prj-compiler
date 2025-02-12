@@ -68,7 +68,13 @@ extern int yydebug;
     END = 269,                     /* END  */
     COMPARISON = 270,              /* COMPARISON  */
     ELSE = 271,                    /* ELSE  */
-    WHILE = 272                    /* WHILE  */
+    WHILE = 272,                   /* WHILE  */
+    TRANSACTION = 273,             /* TRANSACTION  */
+    VOID = 274,                    /* VOID  */
+    RETURN = 275,                  /* RETURN  */
+    OPEN_PAREN = 276,              /* OPEN_PAREN  */
+    CLOSE_PAREN = 277,             /* CLOSE_PAREN  */
+    COMMA = 278                    /* COMMA  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -81,7 +87,7 @@ union YYSTYPE
 
   char *str;
 
-#line 85 "grammar.tab.h"
+#line 91 "grammar.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -48,6 +48,13 @@ void print_node(const char *node_name) {
 %token COMPARISON
 %token ELSE
 %token WHILE
+%token TRANSACTION   /* Palavra-chave "transaction" */
+%token VOID          /* Palavra-chave "void" */
+%token RETURN        /* Palavra-chave "return" */
+%token OPEN_PAREN    /* "(" */
+%token CLOSE_PAREN   /* ")" */
+%token COMMA         /* "," */
+
 
 
 %type <str> assignment
@@ -68,6 +75,7 @@ statement:
       conditional_statement
     |  while_statement
     | bank_assignment
+    | func_def
     | assignment
     { decrease_indent(); }
     ;
@@ -135,6 +143,37 @@ while_statement:
 if_tail:
       ELSE NEWLINE optional_statement_list END
     | END
+    ;
+
+param_list:
+      OPEN_PAREN param_decl_list CLOSE_PAREN
+    | OPEN_PAREN CLOSE_PAREN
+    ;
+
+param_decl_list:
+      param_decl
+    | param_decl_list COMMA param_decl
+    ;
+
+param_decl:
+      TYPE ID
+    ;
+
+func_body:
+    optional_statement_list
+    ;
+
+func_def:
+    { print_node("func_def"); increase_indent(); }
+     TRANSACTION func_tail
+    { decrease_indent(); }
+    ;
+
+func_tail:
+    { print_node("func_def"); increase_indent(); }
+     VOID ID param_list THEN NEWLINE optional_statement_list END
+    | TYPE ID param_list THEN NEWLINE optional_statement_list RETURN expr NEWLINE END
+    { decrease_indent(); }
     ;
 
 %%

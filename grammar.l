@@ -189,24 +189,24 @@ return_keyword  return
     print_tag("ASS"); 
     return ASS; 
 }
-{open_paren}      { print_tag("OPEN_PAREN"); }
-{close_paren}     { print_tag("CLOSE_PAREN"); }
+{open_paren}      { print_tag("OPEN_PAREN"); return OPEN_PAREN; }
+{close_paren}     { print_tag("CLOSE_PAREN"); return CLOSE_PAREN; }
 {open_bracket} { 
     print_tag("OPEN_BRACKET"); 
     return OPEN_BRACKET; 
 }
 {close_bracket} { print_tag("CLOSE_BRACKET"); return CLOSE_BRACKET; }
-{comma}           { print_tag("COMMA"); }
-{void}            { print_tag("VOID"); }
+{comma}           { print_tag("COMMA"); return COMMA; }
+{void}            { print_tag("VOID"); return VOID; }
 {if_keyword}      { print_tag("IF"); return IF; }
 {else_keyword}    { print_tag("ELSE"); return ELSE; }
 {then_keyword}    { print_tag("THEN"); return THEN; }
 {end_keyword}     { print_tag("END"); return END; }
 {while_keyword}   { print_tag("WHILE"); return WHILE; }
-{return_keyword}  { print_tag("RETURN"); }
+{return_keyword}  { print_tag("RETURN"); return RETURN; }
 {operator}        { print_tag("OPERATOR"); return OPERATOR; }
 {comparison}     { print_tag("COMPARISON"); return COMPARISON; }
-{transaction_keyword}  { print_tag("TRANSACTION"); }
+{transaction_keyword}  { print_tag("TRANSACTION"); return TRANSACTION; }
 {start_keyword}  { print_tag("START"); }
 {bank} { 
     print_tag("BANK"); 
