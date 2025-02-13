@@ -54,7 +54,7 @@ void print_node(const char *node_name) {
 %token OPEN_PAREN    /* "(" */
 %token CLOSE_PAREN   /* ")" */
 %token COMMA         /* "," */
-
+%token START
 
 
 %type <str> assignment
@@ -76,6 +76,7 @@ statement:
     |  while_statement
     | bank_assignment
     | func_def
+    | func_call_statement
     | assignment
     { decrease_indent(); }
     ;
@@ -96,6 +97,18 @@ optional_type:
 assignment_tail:
       ASS expr
     | OPEN_BRACKET BALANCE_VALUE CLOSE_BRACKET ASS expr
+    ;
+
+argument_list:
+      /* vazio */
+    | expr
+    | argument_list COMMA expr
+    ;
+
+func_call_statement:
+    { print_node("func_call_statement"); increase_indent(); }
+    START ID OPEN_PAREN argument_list CLOSE_PAREN
+    { decrease_indent(); }
     ;
 
 expr:

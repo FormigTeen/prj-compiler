@@ -74,7 +74,8 @@ extern int yydebug;
     RETURN = 275,                  /* RETURN  */
     OPEN_PAREN = 276,              /* OPEN_PAREN  */
     CLOSE_PAREN = 277,             /* CLOSE_PAREN  */
-    COMMA = 278                    /* COMMA  */
+    COMMA = 278,                   /* COMMA  */
+    START = 279                    /* START  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -87,7 +88,7 @@ union YYSTYPE
 
   char *str;
 
-#line 91 "grammar.tab.h"
+#line 92 "grammar.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -1,7 +1,7 @@
 /* Definitions */
 
 %{
-    #define CAN_PRINT 1
+    #define CAN_PRINT 0
     #include "grammar.tab.h"
     #include <stdio.h>
     #include <ctype.h>
@@ -207,7 +207,7 @@ return_keyword  return
 {operator}        { print_tag("OPERATOR"); return OPERATOR; }
 {comparison}     { print_tag("COMPARISON"); return COMPARISON; }
 {transaction_keyword}  { print_tag("TRANSACTION"); return TRANSACTION; }
-{start_keyword}  { print_tag("START"); }
+{start_keyword}  { print_tag("START"); return START; }
 {bank} { 
     print_tag("BANK"); 
     return BANK;

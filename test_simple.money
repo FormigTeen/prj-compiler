@@ -33,7 +33,7 @@ end
 # Definição de uma função que não retorna valor
 transaction void log_transaction(account amount) then
     # Exemplo fictício de "impressão" de uma transação
-    # run print("Transaction: ", amount)
+    start print("Transaction: ", amount)
 end
 
 # Definição de uma função que retorna um valor flutuante
@@ -41,3 +41,6 @@ transaction account interest(account base, coin rate) then
     account result = base * rate
     return result
 end
+
+# Chamando a função que não retorna valor
+start log_transaction(calculated_interest)
