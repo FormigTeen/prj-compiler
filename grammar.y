@@ -40,7 +40,7 @@ void print_node(const char *node_name) {
 %token <str> BALANCE_VALUE  /* valores numéricos (inteiros e decimais) */
 %token NEWLINE  
 %token ASS     /* sinal de atribuição "=" */
-%token OPERATOR  /* operadores aritméticos, ex.: +, -, *, / */
+%token <str> OPERATOR  /* operadores aritméticos, ex.: +, -, *, / */
 %token BANK    /* para expressões do tipo bank[...] */
 %token OPEN_BRACKET
 %token CLOSE_BRACKET
@@ -60,18 +60,17 @@ void print_node(const char *node_name) {
 %type <str> assignment
 %type <str> bank_assignment
 %type <str> expr term
+%type <str> optional_type
 
 %%
 
 program:
-    { print_node("program"); increase_indent(); }
     /* vazio */
   | program NEWLINE
-  | program statement NEWLINE { decrease_indent(); }
+  | program statement NEWLINE
     ;
 
 statement:
-    { print_node("statement"); increase_indent(); }
       conditional_statement
     |  while_statement
     | bank_assignment
@@ -83,15 +82,16 @@ statement:
 
 assignment:
     { print_node("assignment"); increase_indent(); }
-    optional_type ID assignment_tail
+    optional_type ID assignment_tail 
     { 
+       print_node($3);
       decrease_indent(); 
     }
     ;
 
 optional_type:
-      TYPE
-    | /* vazio */
+      TYPE { print_node($1); }
+    | /* vazio */ { $$ = ""; }
     ;
 
 assignment_tail:
@@ -112,8 +112,10 @@ func_call_statement:
     ;
 
 expr:
-    term
-    | expr OPERATOR term
+    { print_node("expression"); increase_indent(); }
+    term 
+    | expr OPERATOR term     
+    { print_node($2); decrease_indent(); }
     ;
 
 term:
@@ -170,10 +172,6 @@ param_decl_list:
 
 param_decl:
       TYPE ID
-    ;
-
-func_body:
-    optional_statement_list
     ;
 
 func_def:

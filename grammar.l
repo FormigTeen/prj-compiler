@@ -204,7 +204,11 @@ return_keyword  return
 {end_keyword}     { print_tag("END"); return END; }
 {while_keyword}   { print_tag("WHILE"); return WHILE; }
 {return_keyword}  { print_tag("RETURN"); return RETURN; }
-{operator}        { print_tag("OPERATOR"); return OPERATOR; }
+{operator}        { 
+    print_tag("OPERATOR"); 
+    yylval.str = strdup(yytext); 
+    return OPERATOR; 
+}
 {comparison}     { print_tag("COMPARISON"); return COMPARISON; }
 {transaction_keyword}  { print_tag("TRANSACTION"); return TRANSACTION; }
 {start_keyword}  { print_tag("START"); return START; }
